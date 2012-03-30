@@ -107,7 +107,8 @@ module ExpectedBehavior
       end
 
       def unarchive_associations(head_archive_number)
-        act_on_all_archival_associations(head_archive_number, :unarchive => true)
+	act_only_on_dependent_destroy_associations = Proc.new {|association| association.options[:dependent] == :destroy}
+        act_on_all_archival_associations(head_archive_number, :unarchive => true, :association_options => act_only_on_dependent_destroy_associations)
       end
 
       def act_on_all_archival_associations(head_archive_number, options={})
